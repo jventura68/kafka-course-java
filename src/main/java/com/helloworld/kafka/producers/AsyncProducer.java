@@ -1,5 +1,6 @@
 package com.helloworld.kafka.producers;
 import java.io.IOException;
+import org.apache.kafka.common.serialization.StringSerializer;
 import java.lang.invoke.MethodHandles;
 import java.util.Properties;
 import java.util.Random;
@@ -21,8 +22,8 @@ public class AsyncProducer {
         // Configuración del productor
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:29092");
-        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("key.serializer", StringSerializer.class);
+        props.put("value.serializer", StringSerializer.class);
         
         final String topic = "test-topic";
 
@@ -42,14 +43,6 @@ public class AsyncProducer {
         
         producer.close();
 
-    }
-    
-    public static void getFutureRecordMetadata(String user, String item,RecordMetadata metadata, Exception exception) {
-        if (exception != null)
-            exception.printStackTrace();
-        else
-            System.out.printf("Produced event to topic %s: user= %-10s value = %-20s partition=%d%n", 
-            					metadata.topic(), user, item, metadata.partition());
     }
     
 }

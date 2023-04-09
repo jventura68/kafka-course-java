@@ -1,9 +1,11 @@
+package com.helloworld.kafka.registry;
+
+import java.io.IOException;
+import java.util.Collection;
+
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaMetadata;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
-
-import java.io.IOException;
-import java.util.List;
 
 public class ListSchemas {
 
@@ -12,7 +14,7 @@ public class ListSchemas {
         SchemaRegistryClient schemaRegistryClient = new CachedSchemaRegistryClient(schemaRegistryUrl, 100);
 
         try {
-            List<String> subjects = schemaRegistryClient.getAllSubjects();
+            Collection<String> subjects = schemaRegistryClient.getAllSubjects();
             System.out.println("List of schemas in Schema Registry:");
 
             for (String subject : subjects) {

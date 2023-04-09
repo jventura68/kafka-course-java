@@ -28,6 +28,7 @@ public class AsyncProducerAvro {
         props.put("bootstrap.servers", "localhost:29092");
         props.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
         props.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+        props.put("schema.registry.url", "http://localhost:8085");
 
         final String topic = "test-topic-avro";
 

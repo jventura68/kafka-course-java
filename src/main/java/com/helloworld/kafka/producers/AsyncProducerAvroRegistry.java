@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaMetadata;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
+
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -25,7 +27,7 @@ public class AsyncProducerAvroRegistry {
 
     private static final Logger log = LoggerFactory.getLogger(AsyncProducerAvro.class);
 
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException, RestClientException {
         // Configuración del productor
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:29092");

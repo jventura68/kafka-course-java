@@ -1,8 +1,12 @@
 package com.helloworld.kafka.registry;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
+
 import io.confluent.kafka.schemaregistry.client.rest.RestService;
-import io.confluent.kafka.schemaregistry.client.rest.entities.Schema;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class RegisterSchema {
 
@@ -11,23 +15,17 @@ public class RegisterSchema {
         String registryUrl = "http://localhost:8085";
 
         // Cargar el esquema del archivo test.key.avsc
-        String avroSchemaFilePath = "src/main/resources/test.key.avsc";
-        String keySchemaString = readFileFromResources(avroSchemaFilePath);
+        String subject = "test-value";
+        String resourceFile = "test.value.avsc";
+        String schemaString = readFileFromResources(resourceFile);
 
         // Crear un RestService para interactuar con el Schema Registry
         RestService restService = new RestService(registryUrl);
-
-        // Registrar el esquema en el Schema Registry
-        String subject = "test-key";
-        int schemaId = registerSchema(restService, subject, keySchemaString);
+        int schemaId = restService.registerSchema(schemaString, subject);
 
         System.out.printf("El esquema se ha registrado con éxito bajo el sujeto '%s' y el ID %d%n", subject, schemaId);
     }
 
-    private static int registerSchema(RestService restService, String subject, String schemaString) throws Exception {
-        Schema schema = new Schema(subject, schemaString, "AVRO");
-        return restService.registerSchema(schema);
-    }
 
     public static String readFileFromResources(String fileName) {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();

@@ -1,6 +1,11 @@
 package com.helloworld.kafka.consumers;
 
-import org.apache.kafka.clients.consumer.*;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+
 
 import java.lang.invoke.MethodHandles;
 import java.time.Duration;
@@ -16,7 +21,6 @@ public class SimpleConsumer {
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public static void main(final String[] args) throws Exception {
-
         final String topic = "test-topic";
         
         String configFile = "./config/default.properties";
@@ -31,7 +35,8 @@ public class SimpleConsumer {
         props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         // Define grupo y offset
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "kafka-java-getting-started");
+    	final String consumerGroup = MethodHandles.lookup().lookupClass()+"Group";
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroup);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
         try (final Consumer<String, String> consumer = new KafkaConsumer<>(props)) {
