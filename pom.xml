@@ -12,18 +12,6 @@
 			<artifactId>kafka-clients</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<!-- Para los mensajes con formato avro -->
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-clients</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-clients</artifactId>
-			<version>3.0.0</version>
-			<classifier>javadoc</classifier>
-		</dependency>
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
@@ -34,12 +22,11 @@
 			<artifactId>kafka-avro-serializer</artifactId>
 			<version>7.0.1</version>
 		</dependency>
-		<dependency>
-   			<groupId>io.confluent</groupId>
-    		<artifactId>kafka-schema-registry-client</artifactId>
-    		<version>6.2.1</version>
-		</dependency>
-
+		<!--		<dependency>-->
+		<!--   			<groupId>io.confluent</groupId>-->
+		<!--    		<artifactId>kafka-schema-registry-client</artifactId>-->
+		<!--    		<version>6.2.1</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -84,6 +71,25 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+										<exclude>META-INF/LICENSE</exclude>
+										<exclude>META-INF/NOTICE</exclude>
+										<exclude>META-INF/LICENSE.txt</exclude>
+										<exclude>META-INF/NOTICE.txt</exclude>
+										<exclude>META-INF/services/com.fasterxml.jackson.core.JsonFactory</exclude>
+										<exclude>META-INF/services/com.fasterxml.jackson.core.ObjectCodec</exclude>
+										<exclude>module-info.class</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
