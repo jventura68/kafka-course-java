@@ -9,6 +9,9 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.SchemaMetadata;
+import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
@@ -18,7 +21,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AsyncProducerAvro {
+public class AsyncProducerAvroRegistry {
 
     private static final Logger log = LoggerFactory.getLogger(AsyncProducerAvro.class);
 
@@ -28,26 +31,24 @@ public class AsyncProducerAvro {
         props.put("bootstrap.servers", "localhost:29092");
         props.put("key.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
         props.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
+        //propiedad para la localización del registry
+        props.put("schema.registry.url", "http://localhost:8085");
 
         final String topic = "test-topic-avro";
 
         final Producer<GenericRecord, GenericRecord> producer = new KafkaProducer<>(props);
-        String keySchemaString = """
-       		{
-			  "namespace": "test",
-			  "type": "record",
-			  "name": "key",
-			  "fields": [
-			    {
-			      "name": "key",
-			      "type": "string"
-			    }
-			  ]
-			}
-   		""";
-        String valueSchemaString = readFileFromResources("test.value.avsc");
-        Schema keySchema = new Schema.Parser().parse(keySchemaString);
-        Schema valueSchema = new Schema.Parser().parse(valueSchemaString);
+
+        // Recuperación de esquemas desde el registry
+        String keySubject = "test-key"; // nombre dado al esquema en el registry
+        String valueSubject = "test-value"; 
+
+        SchemaRegistryClient schemaRegistryClient = new CachedSchemaRegistryClient("http://localhost:8085", 100);
+        SchemaMetadata keySchemaMetadata = schemaRegistryClient.getLatestSchemaMetadata(keySubject);
+        SchemaMetadata valueSchemaMetadata = schemaRegistryClient.getLatestSchemaMetadata(valueSubject);
+
+        Schema keySchema = new Schema.Parser().parse(keySchemaMetadata.getSchema());
+        Schema valueSchema = new Schema.Parser().parse(valueSchemaMetadata.getSchema());
+
 
         // Crear y enviar registros
         final Random rnd = new Random();
@@ -78,15 +79,5 @@ public class AsyncProducerAvro {
         System.out.printf("%s events were produced to topic %s%n", numMessages, topic);
         producer.flush();
         producer.close();
-    }
-    
-    public static String readFileFromResources(String fileName) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        try (InputStream inputStream = classLoader.getResourceAsStream(fileName);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            return reader.lines().collect(Collectors.joining("\n"));
-        } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo " + fileName + " desde src/main/resources", e);
-        }
     }
 }
