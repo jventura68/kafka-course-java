@@ -95,11 +95,3 @@ public class ConsumerPerPartitionAsyncCommit {
         });
     }
 }
-
-        String topic = "test-topic";
-        int partitionNumber = 0;
-        long specificOffset = 10L; // Cambie este valor al offset específico que desea consumir
-
-        TopicPartition topicPartition = new TopicPartition(topic, partitionNumber);
-        consumer.assign(Collections.singletonList(topicPartition));
-        consumer.seek(topicPartition, specificOffset);
