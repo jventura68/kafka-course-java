@@ -69,7 +69,9 @@ public class ConsumerPerPartitionAsyncCommit {
             while (true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
                 if (records.count()>0) {
+                	final int count = records.count();
                 	processRecords(records, consumer, numConsumer);
+                	System.out.println("Registros procesados: "+count);
                 }
                 
             }
@@ -81,10 +83,12 @@ public class ConsumerPerPartitionAsyncCommit {
     }
 
     private static void processRecords(ConsumerRecords<String, String> records, KafkaConsumer<String, String> consumer, int numConsumer) {
+    	Collection<Integer> offsetsCollection = new ArrayList<>();
         for (ConsumerRecord<String, String> record : records) {
             System.out.printf("Consumer = %s, offset = %d, partition = %d, key = %s, value = %s%n", 
             		//consumer.groupMetadata().memberId()
             		numConsumer,  record.offset(), record.partition(), record.key(), record.value());
+            offsetsCollection.add((int)record.offset());
         }
         consumer.commitAsync((offsets, exception) -> {
       		System.out.println("Callback offsets "+ offsets+" exception "+exception);
