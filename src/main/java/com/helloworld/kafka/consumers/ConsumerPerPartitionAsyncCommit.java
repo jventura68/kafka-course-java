@@ -34,10 +34,6 @@ public class ConsumerPerPartitionAsyncCommit {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            for (KafkaConsumer<String, String> consumer : consumers) {
-                consumer.wakeup();
-            }
-
             executor.shutdown();
         }
     }
