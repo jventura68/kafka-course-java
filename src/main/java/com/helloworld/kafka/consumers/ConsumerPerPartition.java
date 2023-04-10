@@ -5,6 +5,7 @@ package com.helloworld.kafka.consumers;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
+import org.apache.kafka.common.deserializer.StringDeserializer;
 
 import java.time.Duration;
 import java.util.*;
@@ -41,8 +42,9 @@ public class ConsumerPerPartition {
     private static KafkaConsumer<String, String> createConsumer() {
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, BOOTSTRAP_SERVERS);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        props.put("enable.auto.commit", false);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID);
 
         return new KafkaConsumer<>(props);
