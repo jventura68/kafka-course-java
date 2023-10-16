@@ -34,18 +34,18 @@ public class AsyncProducerAvro {
 
         final Producer<GenericRecord, GenericRecord> producer = new KafkaProducer<>(props);
         String keySchemaString = """
-       		{
-			  "namespace": "test",
-			  "type": "record",
-			  "name": "key",
-			  "fields": [
-			    {
-			      "name": "key",
-			      "type": "string"
-			    }
-			  ]
-			}
-   		""";
+            {
+                "namespace": "test",
+                "type": "record",
+                "name": "key",
+                "fields": [
+                {
+                    "name": "key",
+                    "type": "string"
+                }
+                ]
+            }
+        """;
         String valueSchemaString = readFileFromResources("test.value.avsc");
         Schema keySchema = new Schema.Parser().parse(keySchemaString);
         Schema valueSchema = new Schema.Parser().parse(valueSchemaString);

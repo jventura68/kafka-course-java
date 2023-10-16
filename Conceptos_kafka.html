@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Gu&iacute;a R&aacute;pida de Kafka</title>
+        <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+        
+    </head>
+    <body class="vscode-body vscode-light">
+        <h1 id="guía-rápida-de-kafka">Guía Rápida de Kafka</h1>
+<p>A continuación, se describe una guía rápida de cómo trabajar con Kafka para definir un topic, lanzar un consumer y un producer.</p>
+<p>Para poder incluir los comandos debemos abrir un terminal sobre el docker</p>
+<ul>
+<li>
+<p>Para abrir un terminal en el contenedor:</p>
+<pre><code class="language-bash">docker <span class="hljs-built_in">exec</span> -it docker-kafka1 bash
+</code></pre>
+</li>
+</ul>
+<h2 id="1-definir-un-topic">1. Definir un Topic</h2>
+<p>Para definir un topic en Kafka con una única partición, utiliza el siguiente comando:</p>
+<pre><code class="language-bash">kafka-topics --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic miTopic
+</code></pre>
+<p>A continuación podemos listar los topics que existen en el cluster</p>
+<pre><code class="language-bash">kafka-topics --list --bootstrap-server localhost:9092
+
+</code></pre>
+<h2 id="definir-consumidor-y-productor">Definir consumidor y productor</h2>
+<p>Podemos abrir dos terminales para sobre contenedor docker-kafka-1. En uno de ellos ejecutamos el consumer y en el otro el producer</p>
+<ul>
+<li>
+<p>El consumidor en uno de los terminales</p>
+<pre><code class="language-bash">kafka-console-consumer --bootstrap-server localhost:9092 --topic mitopic
+</code></pre>
+</li>
+<li>
+<p>El productor en el otro</p>
+<pre><code class="language-bash">kafka-console-producer --broker-list localhost:9092 --topic mitopic
+</code></pre>
+</li>
+<li>
+<p>Leer todos los mensajes y no solo los que se creen nuevos</p>
+<pre><code class="language-bash">kafka-console-consumer --bootstrap-server localhost:9092 --topic topic-test --from-beginning
+</code></pre>
+</li>
+<li>
+<p>Borrado de topics</p>
+</li>
+</ul>
+<pre><code class="language-bash">kafka-topics --bootstrap-server localhost:9092 --topic topic-test2 --create --partitions 3 --replication-factor 1
+kafka-topics --bootstrap-server localhost:9092 --list
+kafka-topics --bootstrap-server localhost:9092 --topic topic-test2 --delete
+kafka-topics --bootstrap-server localhost:9092 --list
+</code></pre>
+<ul>
+<li>Enviando mensajes con clave</li>
+</ul>
+<pre><code class="language-bash">kafka-topics --bootstrap-server localhost:9092 --topic topic-key --create --partitions 3 --replication-factor 1
+
+kafka-console-producer --broker-list localhost:9092 --topic topic-key --property <span class="hljs-string">&quot;parse.key= true&quot;</span> --property <span class="hljs-string">&quot;key.separator=:&quot;</span>
+</code></pre>
+<ul>
+<li>verificar que los mensajes se enrutan a las particiones en función de la clave. Abrir cada consumer en un terminal de docker-kafka1 distinto.</li>
+</ul>
+<pre><code class="language-bash">kafka-console-consumer --bootstrap-server localhost:9092 --topic topic-key --from-beginning --partition 0 --property <span class="hljs-string">&quot;print.key=true&quot;</span>
+kafka-console-consumer --bootstrap-server localhost:9092 --topic topic-key --from-beginning --partition 1 --property <span class="hljs-string">&quot;print.key=true&quot;</span>
+kafka-console-consumer --bootstrap-server localhost:9092 --topic topic-key --from-beginning --partition 2 --property <span class="hljs-string">&quot;print.key=true&quot;</span>
+</code></pre>
+
+        
+        
+    </body>
+    </html>

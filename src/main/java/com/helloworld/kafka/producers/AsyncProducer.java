@@ -4,8 +4,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import java.lang.invoke.MethodHandles;
 import java.util.Properties;
 import java.util.Random;
-import java.util.concurrent.Future;
-
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -18,7 +16,7 @@ public class AsyncProducer {
 
 	private static final Logger log = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args){
         // Configuración del productor
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:29092");

@@ -1,11 +1,14 @@
+package com.helloworld.kafka.consumers;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Properties;
+
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Properties;
 
 public class AvroConsumerExample {
     public static void main(String[] args) {
@@ -29,10 +32,10 @@ public class AvroConsumerExample {
         try {
             while (true) {
                 ConsumerRecords<String, Object> records = consumer.poll(Duration.ofMillis(100));
-                records.forEach(record -> {
-                    System.out.printf("Consumed record with key %s and value %s, and updated stock count to %s%n",
-                            record.key(), record.value().toString());
-                });
+                records.forEach(message -> 
+                    System.out.printf("Consumed record with key %s and value %s, and updated stock count to %s",
+                            message.key(), message.value().toString())
+                );
             }
         } finally {
             consumer.close();

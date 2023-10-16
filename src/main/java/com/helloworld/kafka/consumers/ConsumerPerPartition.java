@@ -11,7 +11,6 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class ConsumerPerPartition {
     private static final String BOOTSTRAP_SERVERS = "localhost:29092";
