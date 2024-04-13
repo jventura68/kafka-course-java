@@ -7,23 +7,28 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
 import io.confluent.kafka.schemaregistry.client.rest.RestService;
+import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 
 public class RegisterSchema {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws IOException, RestClientException{
         // URL del Schema Registry
         String registryUrl = "http://localhost:8085";
 
-        // Cargar el esquema del archivo test.key.avsc
-        String subject = "test-value";
-        String resourceFile = "test.value.avsc";
+        registerSchema(registryUrl, "test-key", "test.key.avsc");
+        registerSchema(registryUrl, "test-value", "test.value.avsc");
+        
+    }
+    
+    public static int registerSchema(String registryUrl, String subject, String resourceFile) throws IOException, RestClientException{
+        
         String schemaString = readFileFromResources(resourceFile);
-
+    
         // Crear un RestService para interactuar con el Schema Registry
         RestService restService = new RestService(registryUrl);
         int schemaId = restService.registerSchema(schemaString, subject);
-
         System.out.printf("El esquema se ha registrado con éxito bajo el sujeto '%s' y el ID %d%n", subject, schemaId);
+        return schemaId;
     }
 
 

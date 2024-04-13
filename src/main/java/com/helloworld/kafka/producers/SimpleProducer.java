@@ -20,9 +20,9 @@ public class SimpleProducer {
         // Enviar un mensaje
         String topic = "test-topic";
         String key = "sample-key";
-        String value = "sample-value";
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
-        producer.send(record);
+        String value = "sample-value2";
+        ProducerRecord<String, String> kafkaRecord = new ProducerRecord<>(topic, key, value);
+        producer.send(kafkaRecord);
 
         // Cerrar el productor
         producer.close();

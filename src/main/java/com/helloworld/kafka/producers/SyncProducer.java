@@ -24,8 +24,8 @@ public class SyncProducer {
         String topic = "test-topic";
         String key = "synchronous";
         String value = "Write sync message";
-        ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, value);
-        Future<RecordMetadata> future = producer.send(record);
+        ProducerRecord<String, String> kafkaRecord = new ProducerRecord<>(topic, key, value);
+        Future<RecordMetadata> future = producer.send(kafkaRecord);
         try {
             RecordMetadata metadata = future.get(); // Bloquea la ejecución hasta que se complete el envío
             System.out.printf("Mensaje enviado al topic: %s, partición: %d, offset: %d%n", metadata.topic(), metadata.partition(), metadata.offset());

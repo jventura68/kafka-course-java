@@ -19,7 +19,11 @@ public class ListSchemas {
 
             for (String subject : subjects) {
                 SchemaMetadata schemaMetadata = schemaRegistryClient.getLatestSchemaMetadata(subject);
-                System.out.printf("Subject: %s, Version: %d, Schema: %s%n", subject, schemaMetadata.getVersion(), schemaMetadata.getSchema());
+                System.out.printf("Subject: %s, ID: %d Version: %d, Schema: %s%n", 
+                                  subject, 
+                                  schemaMetadata.getId(),
+                                  schemaMetadata.getVersion(), 
+                                  schemaMetadata.getSchema());
             }
         } catch (Exception e) {
             System.err.println("Error retrieving schemas from Schema Registry:");

@@ -12,17 +12,7 @@ services:
       ZOOKEEPER_SERVERS: "zookeeper:22888:23888"
     ports:
       - "2181:2181"
-
-  # nifi:
-  #   container_name: nifi
-  #   image: apache/nifi:1.23.2
-  #   ports:
-  #     - "8443:8443"
-  #   environment:
-  #     - SINGLE_USER_CREDENTIALS_USERNAME=admin
-  #     - SINGLE_USER_CREDENTIALS_PASSWORD=password0000
-  #     - NIFI_SENSITIVE_PROPS_KEY=propskey0000                  
-      
+                  
   kafka1:
     image: confluentinc/cp-kafka:5.4.6
     depends_on:

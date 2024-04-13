@@ -1,0 +1,12 @@
+{
+  "namespace": "test",
+  "type": "record",
+  "name": "value",
+  "fields": [
+    {"name": "name", "type": "string"},
+    {"name": "city", "type": "string"},
+    {"name": "phone", "type": ["int", "null"]},
+    {"name": "age", "type": "int", "default": 18 },
+    {"name": "address", "type": "string", "default": "" }
+  ]
+}

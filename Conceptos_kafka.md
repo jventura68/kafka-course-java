@@ -5,8 +5,10 @@ A continuación, se describe una guía rápida de cómo trabajar con Kafka para 
 Para poder incluir los comandos debemos abrir un terminal sobre el docker 
 * Para abrir un terminal en el contenedor:
 
+
+   
    ```bash
-   docker exec -it docker-kafka1 bash
+   docker exec -it docker-kafka1-1 bash
    ```
 
 ## 1. Definir un Topic
