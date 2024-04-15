@@ -33,7 +33,7 @@ public class AvroConsumerExample {
             while (true) {
                 ConsumerRecords<String, Object> records = consumer.poll(Duration.ofMillis(100));
                 records.forEach(message -> 
-                    System.out.printf("Consumed record with key %s and value %s, and updated stock count to %s",
+                    System.out.printf("Consumed record with key %s and value %s",
                             message.key(), message.value().toString())
                 );
             }
