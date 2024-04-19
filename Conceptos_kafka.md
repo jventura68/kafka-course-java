@@ -53,8 +53,13 @@ kafka-topics --bootstrap-server localhost:9092 --list
 ```
 
 
-
-
+* Enviando mensajes sin clave, se reparten por round robin por las particiones
+  Los consumidores se pueden arrancar y parar, se rebalancea la asignación de particiones
+```bash
+kaftopics --bootstrap-server localhost:9092 --topic topic-no-key --create --partitions 2 --replication-factor 1
+kafka-console-producer --broker-list localhost:9092 --topic topic-no-key
+kafka-console-consumer --bootstrap-server localhost:9092 --topic topic-no-key --from-beginning --group "no-key"
+```
 
 * Enviando mensajes con clave
 ```bash

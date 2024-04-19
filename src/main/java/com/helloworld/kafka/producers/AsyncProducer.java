@@ -23,11 +23,11 @@ public class AsyncProducer {
         props.put("key.serializer", StringSerializer.class);
         props.put("value.serializer", StringSerializer.class);
         
-        final String topic = "test-topic";
-
-        String[] users = {"eabara", "jsmith", "sgarcia", "jbernard", "htanaka", "awalther"};
-        String[] items = {"book", "alarm clock", "t-shirts", "gift card", "batteries"};
         final Producer<String, String> producer = new KafkaProducer<>(props);
+
+        final String topic = "topic-varias-particiones";
+        String[] users = {"eabara", "jsmith", "sgarcia", "jbernard", "htanaka", "awalther", "22"};
+        String[] items = {"book", "alarm clock", "t-shirts", "gift card", "batteries"};
             
         final Random rnd = new Random();
         final Long numMessages = 10L;

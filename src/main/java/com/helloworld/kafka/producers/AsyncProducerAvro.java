@@ -30,8 +30,7 @@ public class AsyncProducerAvro {
         props.put("value.serializer", "io.confluent.kafka.serializers.KafkaAvroSerializer");
         props.put("schema.registry.url", "http://localhost:8085");
 
-        final String topic = "test-topic-avro";
-
+        
         final Producer<GenericRecord, GenericRecord> producer = new KafkaProducer<>(props);
         String keySchemaString = """
             {
@@ -39,20 +38,23 @@ public class AsyncProducerAvro {
                 "type": "record",
                 "name": "key",
                 "fields": [
-                {
-                    "name": "key",
-                    "type": "string"
+                    {
+                        "name": "key",
+                        "type": "string"
+                    }
+                    ]
                 }
-                ]
-            }
-        """;
+                """;
         String valueSchemaString = readFileFromResources("test.value.avsc");
         Schema keySchema = new Schema.Parser().parse(keySchemaString);
         Schema valueSchema = new Schema.Parser().parse(valueSchemaString);
-
+        
         // Crear y enviar registros
         final Random rnd = new Random();
         final Long numMessages = 10L;
+
+        final String topic = "test-topic-avro";
+        
         for (Long i = 0L; i < numMessages; i++) {
             GenericRecord keyRecord = new GenericData.Record(keySchema);
             keyRecord.put("key", "key_" + i);
